@@ -1,0 +1,10 @@
+Ini, TOML
+[build]
+image = "python:3.11-slim-buster"
+commands = [
+    "pip install -r requirements.txt",
+    "streamlit run Streamlit_tutorial_1.py"
+]
+
+[env]
+STREAMLIT_RUN_MODE = "production"
