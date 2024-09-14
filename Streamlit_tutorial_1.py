@@ -9,8 +9,7 @@ import requests # or https
 
 # change github.com to raw.githubusercontent.com
 
-URI = "https://github.com/OG-Mendez/diabetes1-deployment/blob/main/diabetes_model_1.pkl"
-STOPWORDS = joblib.load(BytesIO(requests.get(URI).content))
+URI = "https://github.com/OG-Mendez/diabetes1-deployment/blob/main/diabetes_model_1.pkl?raw=true"
 
 class InvalidInputError(Exception):
     pass
