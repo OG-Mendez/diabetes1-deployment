@@ -1,7 +1,16 @@
 import streamlit as st
 import pandas as pd
 import joblib
+from io import BytesIO
+import requests # or https
 
+# e.g. a file call stopwords saved by joblib
+# https://github.com/Proteusiq/hisia/v1.0.1/hisia/models/data/stops.pkl
+
+# change github.com to raw.githubusercontent.com
+
+URI = "https://github.com/OG-Mendez/diabetes1-deployment/blob/main/diabetes_model_1.pkl"
+STOPWORDS = joblib.load(BytesIO(requests.get(URI).content))
 
 class InvalidInputError(Exception):
     pass
@@ -21,7 +30,7 @@ def pred(Gender, AGE, HbA1c, Chol, TG, VLDL, BMI):
     b = pd.DataFrame.from_dict([a])
     print(b)
 
-    clf = joblib.load('diabetes_model_1.pkl')
+    clf = joblib.load(BytesIO(requests.get(URI).content))
     c = clf.predict(b)
     if c == 0:
         d = "Little to no chance of patient being diabetic"
