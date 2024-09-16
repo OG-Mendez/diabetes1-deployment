@@ -59,12 +59,12 @@ def main():
     # the following lines create text boxes in which the user can enter
     # the data required to make the prediction
     Gender = st.selectbox("Gender", ("Male", "Female"))
-    AGE = st.text_input("Age", "Type Here")
-    HbA1c = st.text_input("HbA1c", "Type Here")
-    Chol = st.text_input("Cholestrol", "Type Here")
-    TG = st.text_input("TG", "Type Here")
-    VLDL = st.text_input("VLDL", "Type Here")
-    BMI = st.text_input("BMI", "Type Here")
+    AGE = st.text_input("Age", placeholder="Type Here")
+    HbA1c = st.text_input("HbA1c", placeholder="Type Here")
+    Chol = st.text_input("Cholestrol", placeholder="Type Here")
+    TG = st.text_input("TG", placeholder="Type Here")
+    VLDL = st.text_input("VLDL", placeholder="Type Here")
+    BMI = st.text_input("BMI", placeholder="Type Here")
 
     result = ""
     # the below line ensures that when the button called 'Predict' is clicked,
