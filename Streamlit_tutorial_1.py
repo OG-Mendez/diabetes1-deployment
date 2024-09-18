@@ -2,7 +2,12 @@ import streamlit as st
 import pandas as pd
 import joblib
 from io import BytesIO
-import requests 
+import requests # or https
+
+# e.g. a file call stopwords saved by joblib
+# https://github.com/Proteusiq/hisia/v1.0.1/hisia/models/data/stops.pkl
+
+# change github.com to raw.githubusercontent.com
 
 URI = "https://github.com/OG-Mendez/diabetes1-deployment/blob/main/diabetes_model_1.pkl?raw=true"
 
@@ -29,9 +34,10 @@ def pred(Gender, AGE, HbA1c, Chol, TG, VLDL, BMI):
     if c == 0:
         d = "Little to no chance of patient being diabetic"
     elif c == 1:
-        d = "Possible chance of Diabetes - Patient is at risk of having diabetes"
+        d = "Possible chance of Diabetes - Patient is at risk of having diabetes, for further assistance contact " \
+            "FMC-Abuja at +234 7025700037"
     else:
-        d = "Patient has a high chance of being diabetic"
+        d = "Patient has a high chance of being diabetic, for further assistance contact FMC-Abuja at +234 7025700037"
     return d
 
 
@@ -42,9 +48,28 @@ def main():
     # here we define some of the front end elements of the web page like
     # the font and background color, the padding and the text to be displayed
     html_temp = """ 
-    <div style ="background-color:yellow;padding:13px"> 
-    <h1 style ="color:black;text-align:center;">Streamlit Diabetes Prediction ML App </h1> 
-    </div> 
+    <style>
+    .header {
+        background: linear-gradient(90deg, rgba(30,144,255,1) 0%, rgba(0,123,255,1) 100%);
+        padding: 15px;  /* Reduced padding */
+        border-radius: 8px;  /* Slightly smaller border-radius */
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
+    .header h1 {
+        color: white;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 200;
+        font-size: 36px;  /* Slightly smaller font size */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        letter-spacing: 1.5px;  /* Slightly reduced letter spacing */
+        margin: 0;
+    }
+    </style>
+
+    <div class="header"> 
+        <h1>Streamlit Diabetes Prediction ML App</h1>
+    </div>
     """
 
     # this line allows us to display the front end aspects we have
@@ -53,13 +78,29 @@ def main():
 
     # the following lines create text boxes in which the user can enter
     # the data required to make the prediction
-    Gender = st.selectbox("Gender", ("Male", "Female"))
-    AGE = st.text_input("Age", placeholder="Type Here")
-    HbA1c = st.text_input("HbA1c", placeholder="Type Here")
-    Chol = st.text_input("Cholestrol", placeholder="Type Here")
-    TG = st.text_input("TG", placeholder="Type Here")
-    VLDL = st.text_input("VLDL", placeholder="Type Here")
-    BMI = st.text_input("BMI", placeholder="Type Here")
+    Gender = st.selectbox("Gender", ("Male", "Female"), help="Select Gender")
+    AGE = st.text_input("Age", placeholder= "Type Here", help="Your Age")
+    HbA1c = st.text_input("HbA1c (Glycated Haemoglobin)", placeholder= "Type Here", help="Shows what your average "
+                                                                                         "blood sugar (glucose) level "
+                                                                                         "was over the past two to "
+                                                                                         "three months")
+    Chol = st.text_input("Cholestrol", placeholder="Type Here", help="If you have too much cholesterol in your blood, "
+                                                                     "it can combine with other substances in the blood"
+                                                                     " to form plaque. Plaque sticks to the walls of "
+                                                                     "your arteries.")
+    TG = st.text_input("TG (TriGlycerides)", placeholder="Type Here", help="Triglycerides come from the food you "
+                                                                           "eat. Extra calories are turned into "
+                                                                           "triglycerides and stored in fat cells "
+                                                                           "for later use.")
+    VLDL = st.text_input("VLDL (Very Low Density Lipoprotein)", placeholder="Type Here", help="VLDL is a type of bad "
+                                                                                              "cholesterol because it "
+                                                                                              "helps cholesterol build "
+                                                                                              "up on the walls of "
+                                                                                              "arteries.")
+    BMI = st.text_input("BMI (Body Mass Index)", placeholder="Type Here", help="Body mass index (BMI) is a medical "
+                                                                               "screening tool that measures the ratio "
+                                                                               "of your height to your weight to estimate "
+                                                                               "the amount of body fat you have.")
 
     result = ""
     # the below line ensures that when the button called 'Predict' is clicked,
